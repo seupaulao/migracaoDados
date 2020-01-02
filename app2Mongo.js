@@ -1,9 +1,11 @@
 /**
- * unzip bsb2.zip -> bsb2.csv
- * CARGA BSB2 -> MONGODB & REDIS
- *
+ * REDIS SINTAXE
  * VER_ABREV_CAP:VERS = TEXTO
- * 
+ * -----------------------------------------------------
+ * 1. Unzip bsb2.zip -> bsb2.csv
+ * 2. CARGA BSB2 -> MONGODB 
+ * -----------------------------------------------------
+ * CSV BSB2.CSV DADOS
  * separador = %
  * 
  * ID
@@ -22,7 +24,9 @@
  * footnotes
  * BDB_Thayers
  * keyRedis    - calculado
- * 
+ * -----------------------------------------------------
+ * Mongo db : bsb
+ * Collection : data
  *
  **/
 const csv = require('csv-parser');
@@ -81,31 +85,3 @@ s.pipe(csv({separator : '%'}))
  .on('end', () => {
   console.log('CSV file successfully processed');
 })
-
-
-//var conjunto = new Set();
-//fs.createReadStream("bsb2.csv")
-/*
-fs.createReadStream(zip.readFile("bsb2.csv"))
-  .pipe(csv({separator : '%'}))
-  .on('data', (row) => {
-  //  conjunto.add(row.Verse);
-    if (verso == '') verso = row.Verse;
-    if (row.Verse.trim() == '') row.Verse = verso;
-    if (row.Verse != verso) verso = row.Verse;  
-    var vv = row.Verse.split(' ');
-
-    switch(vv.length) {
-      case 2: row.keyRedis = 'BLV_' + ob[ vv[0] ] + '_' + vv[vv.length-1]; break;
-      case 3: row.keyRedis = 'BLV_' + ob[ vv[0] + " " + vv[1] ] + '_' + vv[vv.length-1];  
-      case 4: row.keyRedis = 'BLV_' + ob[ vv[0] + " " + vv[1] + " " + vv[2] ] + '_' + vv[vv.length-1];
-      break;
-    }
-    
-    console.log(row);
-  })
-  .on('end', () => {
-    console.log('CSV file successfully processed');
-    //conjunto.forEach(valor => console.log(valor));
-  });
-*/
