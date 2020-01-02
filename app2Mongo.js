@@ -42,7 +42,7 @@ console.log('Migrando dados CSV 2 MONGO\n');
 
 var ob = {'Genesis':'GEN','Exodus':'EXO','Leviticus':'LEV','Numbers':'NUM','Deuteronomy':'DEU','Joshua':'JOS',
 'Judges':'JDZ','Ruth':'RUT','1 Samuel':'1SM','2 Samuel':'2SM','1 Kings':'1KI','2 Kings':'2KI',
-'1 Chronicles':'1CH','2 Chronicles':'2CH','Ezra':'EZR','Nehemiah':'NEH','Esther':'EST','Job':'JOB','Psalms':'PSA',
+'1 Chronicles':'1CH','2 Chronicles':'2CH','Ezra':'EZR','Nehemiah':'NEH','Esther':'EST','Job':'JOB','Psalm':'PSA',
 'Proverbs':'PRO','Ecclesiastes':'ECC','Song of Solomon':'SNG','Isaiah':'ISA','Jeremiah':'JER',
 'Lamentations':'LAM','Ezekiel':'EZE','Daniel':'DAN','Hosea':'OSE','Joel':'JOE','Amos':'AMO','Obadiah':'OBA',
 'Jonah':'JON','Micah':'MIC','Nahum':'NAH','Habakkuk':'HAB','Zephaniah':'ZAP','Haggai':'AGE',
