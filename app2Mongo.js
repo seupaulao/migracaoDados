@@ -31,6 +31,7 @@
  **/
 const csv = require('csv-parser');
 var fs = require('fs');
+
 var AdmZip = require('adm-zip');
 console.log('Unzip Base\n');	
 
@@ -65,23 +66,44 @@ s._read = () => {}; // redundant? see update below
 s.push(zip.readAsText("bsb2.csv"));
 s.push(null);
 
-//Ler a stream como um  arquivo CSV com o separador % e transformar num objeto JSON cada linha
-s.pipe(csv({separator : '%'}))
-.on('data', (row) => {
+var vetor = Array();
+  //Ler a stream como um  arquivo CSV com o separador % e transformar num objeto JSON cada linha
+  s.pipe(csv({separator : '%'}))
+  .on('data', (row) => {
 
-  if (verso == '') verso = row.Verse;
-  if (row.Verse.trim() == '') row.Verse = verso;
-  if (row.Verse != verso) verso = row.Verse;  
-  var vv = row.Verse.split(' ');
+    if (verso == '') verso = row.Verse;
+    if (row.Verse.trim() == '') row.Verse = verso;
+    if (row.Verse != verso) verso = row.Verse;  
+    var vv = row.Verse.split(' ');
 
-  switch(vv.length) {
-    case 2: row.keyRedis = 'BLV_' + ob[ vv[0] ] + '_' + vv[vv.length-1]; break;
-    case 3: row.keyRedis = 'BLV_' + ob[ vv[0] + " " + vv[1] ] + '_' + vv[vv.length-1];  break;
-    case 4: row.keyRedis = 'BLV_' + ob[ vv[0] + " " + vv[1] + " " + vv[2] ] + '_' + vv[vv.length-1];   break;
-  }
-  
-  console.log(row);
-})
- .on('end', () => {
-  console.log('CSV file successfully processed');
-})
+    switch(vv.length) {
+      case 2: row.keyRedis = 'BLV_' + ob[ vv[0] ] + '_' + vv[vv.length-1]; break;
+      case 3: row.keyRedis = 'BLV_' + ob[ vv[0] + " " + vv[1] ] + '_' + vv[vv.length-1];  break;
+      case 4: row.keyRedis = 'BLV_' + ob[ vv[0] + " " + vv[1] + " " + vv[2] ] + '_' + vv[vv.length-1];   break;
+    }
+
+    vetor.push(row);
+
+  })
+  .on('end', () => {
+    console.log('CSV file successfully processed');
+    console.log(vetor.length);
+    //conexao com o banco nosql
+    const MongoClient = require('mongodb').MongoClient;
+    const url = "mongodb://localhost:27017";
+    const client = new MongoClient(url);
+
+    client.connect(function(err, client) {
+      if (err) throw err;
+      const db = client.db("bsb");
+      db.collection("data").insertMany(vetor, function(erro, res){ 
+        if(erro) throw erro; 
+        console.log("Linha inserida");
+        client.close();
+      });
+    }); 
+  });
+
+
+
+
